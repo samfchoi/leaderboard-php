@@ -1,0 +1,7 @@
+---
+applications:
+- name: leaderboard-php  
+  buildpack: https://github.com/cloudfoundry/php-buildpack.git
+  services:
+    ${name}-db:
+      type: mysql
