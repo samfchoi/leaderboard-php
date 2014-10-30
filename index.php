@@ -84,7 +84,7 @@ if ($connection->query($sql) === TRUE) {
     echo "\n <br> Error creating table: " . $connection->error;
 }
 
-// Insert some rows
+// Insert a row
 $sql = "INSERT INTO Leaderboard (name, region, score)
 VALUES ('John', 'Americas', '4000')";
 
@@ -97,22 +97,22 @@ if ($connection->query($sql) === TRUE) {
 // Print the table
 echo "\n <br> Printing the table";
 
-$sql = "SELECT id, name, region FROM Leaderboard";
+$sql = "SELECT id, name, region, score FROM Leaderboard";
 $result = $connection->query($sql);
 
 if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
-        echo "\n <br> id: " . $row["id"]. " - Name: " . $row["name"]. " " . $row["region"]. "<br>";
+        echo "\n <br> id: " . $row["id"]. " - Name: " . $row["name"]. " " . $row["region"]. " " . $row["score"] . "<br>";
     }
 } else {
     echo "\n <br> 0 results";
 }
 
-echo "\n <br> Finished!";
-
 // Finally, close the MySQL connection.
-$connection->close();
+
+// Leave the connection open for new entries
+//$connection->close();
 ?>
 
 <html>
@@ -175,7 +175,32 @@ if(isset($_POST['score']))
     $name = $_POST['name'];
     $region = $_POST['region'];
     $score = $_POST['score'];
-    echo "Submitted new score. Name: $name Region: $region Score: $score";
+    echo "Attempting to submit new score. Name: $name Region: $region Score: $score";
+
+    // Insert the new score
+    $sql = "INSERT INTO Leaderboard (name, region, score)
+            VALUES ($name, $region, $score)";
+
+    if ($connection->query($sql) === TRUE) {
+        echo "\n <br> New score added successfully";
+    } else {
+        echo "\n <br> Error: " . $sql . "<br>" . $connection->error;
+    }
+
+    // Print the table
+    echo "\n <br> Printing the table";
+
+    $sql = "SELECT id, name, region, score FROM Leaderboard";
+    $result = $connection->query($sql);
+
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+            echo "\n <br> id: " . $row["id"]. " - Name: " . $row["name"]. " " . $row["region"]. " " . $row["score"] . "<br>";
+        }
+    } else {
+        echo "\n <br> 0 results";
+    }
 }
 ?>
 
