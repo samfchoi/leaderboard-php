@@ -70,23 +70,23 @@ if ($row) {
 mysqli_free_result($result);
 
 // Create a table
-$sql = "CREATE TABLE MyGuests (
+$sql = "CREATE TABLE Leaderboard (
 id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-firstname VARCHAR(30) NOT NULL,
-lastname VARCHAR(30) NOT NULL,
-email VARCHAR(50),
+name VARCHAR(40) NOT NULL,
+region VARCHAR(40) NOT NULL,
+score VARCHAR(40) NOT NULL,
 reg_date TIMESTAMP
 )";
 
 if ($connection->query($sql) === TRUE) {
-    echo "\n <br> Table MyGuests created successfully";
+    echo "\n <br> Table Leaderboard created successfully";
 } else {
     echo "\n <br> Error creating table: " . $connection->error;
 }
 
 // Insert some rows
-$sql = "INSERT INTO MyGuests (firstname, lastname, email)
-VALUES ('John', 'Doe', 'john@example.com')";
+$sql = "INSERT INTO Leaderboard (name, region, score)
+VALUES ('John', 'Americas', '4000')";
 
 if ($connection->query($sql) === TRUE) {
     echo "\n <br> New record created successfully";
@@ -97,13 +97,13 @@ if ($connection->query($sql) === TRUE) {
 // Print the table
 echo "\n <br> Printing the table";
 
-$sql = "SELECT id, firstname, lastname FROM MyGuests";
+$sql = "SELECT id, name, region FROM Leaderboard";
 $result = $connection->query($sql);
 
 if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
-        echo "\n <br> id: " . $row["id"]. " - Name: " . $row["firstname"]. " " . $row["lastname"]. "<br>";
+        echo "\n <br> id: " . $row["id"]. " - Name: " . $row["name"]. " " . $row["region"]. "<br>";
     }
 } else {
     echo "\n <br> 0 results";
@@ -113,3 +113,71 @@ echo "\n <br> Finished!";
 
 // Finally, close the MySQL connection.
 $connection->close();
+?>
+
+<html>
+<head>
+    <title>Title</title>
+    <style type="text/css">
+    table {
+        margin: 8px;
+    }
+	h1 {
+    	color: green;
+    	text-align: center;
+	}
+    </style>
+</head>
+<body>
+
+   <h1>Leaderboard PHP!</h1>
+
+   <table style='width:100%' border='1'>
+   <tr>
+    <th>Name</th>
+    <th>Region</th>
+    <th>Points</th>
+  </tr>
+  <tr>
+    <td>Jill</td>
+    <td>Americas</td>
+    <td>5000</td>
+  </tr>
+  <tr>
+    <td>Eve</td>
+    <td>Asia</td>
+    <td>4000</td>
+  </tr>
+    <tr>
+    <td>Tim</td>
+    <td>Europe</td>
+    <td>3000</td>
+  </tr>
+  </table>
+
+	<br>
+	<br>
+
+
+	<form method="post">
+		Add new score: <br>
+		Name: <input type="text" name="name"><br>
+		Region: <input type="text" name="region"><br>
+		Score: <input type="text" name="score"><br>
+		<input type="submit" value="Submit Score">
+	</form>
+	</body>
+</html>
+
+<?php
+if(isset($_POST['score']))
+{
+    $name = $_POST['name'];
+    $region = $_POST['region'];
+    $score = $_POST['score'];
+    echo "Submitted new score. Name: $name Region: $region Score: $score";
+}
+?>
+
+<p>Finished!</p>
+
