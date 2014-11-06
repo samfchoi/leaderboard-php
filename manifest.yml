@@ -1,7 +1,8 @@
 ---
 applications:
 - name: leaderboard-php 
-  mem: 128M 
+  mem: 128M
+  disk: 256M 
   buildpack: https://github.com/cloudfoundry/php-buildpack.git
   services:
     ${name}-db:
