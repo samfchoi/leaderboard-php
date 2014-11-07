@@ -57,6 +57,7 @@ if ($connection->connect_error) {
 //mysqli_free_result($result);
 
 // Delete table if already created
+// This appears to execute every time a submission is entered.
 //$sql = "DROP TABLE IF EXISTS Leaderboard";
 //echo "\n <br> Table would be deleted now!";
 
@@ -71,7 +72,7 @@ $sql = "CREATE TABLE Leaderboard (
 id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 name VARCHAR(40) NOT NULL,
 region VARCHAR(40) NOT NULL,
-score VARCHAR(40) NOT NULL,
+score INT(40) NOT NULL,
 reg_date TIMESTAMP
 )";
 
@@ -141,7 +142,6 @@ if(isset($_POST['score']))
     $name = $_POST['name'];
     $region = $_POST['region'];
     $score = $_POST['score'];
-    //echo "Attempting to submit new score. Name: $name Region: $region Score: $score";
 
     // Insert the new score
     $sql = "INSERT INTO Leaderboard (name, region, score)
@@ -154,8 +154,6 @@ if(isset($_POST['score']))
     }
 
     // Print the table
-    //echo "\n <br> Printing the table";
-
     $sql = "SELECT name, region, score FROM Leaderboard ORDER BY score DESC";
     $result = $connection->query($sql);
 
